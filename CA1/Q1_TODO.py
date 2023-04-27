@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 import numpy as np
 import matplotlib.pyplot as plt
+from numpy.linalg import inv
+from numpy import transpose, matmul
+
 
 
 def rotate(data, degree):
@@ -18,8 +21,8 @@ def leastSquares(X, Y):
 
     # TODO: YOUR CODE HERE
     # closed form solution by matrix-vector representations only
+    w = matmul(matmul(inv(matmul(transpose(X), X)), transpose(X)), Y)
 
-    w = inv(X.transpose * X)
     return w
 
 
@@ -29,7 +32,7 @@ def model(X, w):
     # return y_hat: M x 1
 
     # TODO: YOUR CODE HERE
-
+    y_hat = matmul(X, w)
     return y_hat
 
 
@@ -87,7 +90,7 @@ def generate_data(M, var1, var2, degree):
 # Settings
 M = 5000
 var1 = 1
-var2 = 0.8
+var2 = 0.3
 degree = 45
 
 data = generate_data(M, var1, var2, degree)
