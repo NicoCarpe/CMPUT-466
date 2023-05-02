@@ -15,8 +15,8 @@ def predict(X, w, y=None):
     
 
     # index the matmul products of loss and risk to get the scalar result
-    loss = 1/(2*X.shape[0]) * np.dot(np.transpose(y_hat - y), (y_hat - y))[0][0]
-    risk = 1/(X.shape[0]) * np.dot(np.transpose(abs(y_hat - y)), np.ones(y.shape[0]))[0]
+    loss = 1/(2*X.shape[0]) * np.dot((np.transpose)(y_hat - y).T, (y_hat - y))[0][0]
+    risk = 1/(X.shape[0]) * np.dot((abs(y_hat - y)).T, np.ones(y.shape[0]))[0]
 
     return y_hat, loss, risk
 
@@ -26,7 +26,7 @@ def train(X_train, y_train, X_val, y_val):
     N_val = X_val.shape[0]
 
     # initialization
-    w = np.random.randn(X_train.shape[1], 1)
+    w = np.zeros(X_train.shape[1], 1)
     # w: (d+1)x1
 
     losses_train = []
@@ -36,8 +36,9 @@ def train(X_train, y_train, X_val, y_val):
     risk_best = 10000
     epoch_best = 0
 
-    for epoch in range(MaxIter):
-
+    for epoch in range(1, MaxIter + 1):
+        print(f"Epoch {epoch}")
+        
         loss_this_epoch = 0
         for b in range(int(np.ceil(N_train/batch_size))):
 
@@ -49,7 +50,7 @@ def train(X_train, y_train, X_val, y_val):
 
             # TODO: Your code here
             # Mini-batch gradient descent
-            w = w - alpha*(1/batch_size) * np.matmul(np.transpose(X_batch), y_hat_batch - y_batch)
+            w = w - alpha*(1/batch_size) * np.dot((X_batch), y_hat_batch - y_batch)
 
         # TODO: Your code here
         # monitor model behavior after each epoch
